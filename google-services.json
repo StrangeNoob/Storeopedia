@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "900310376050",
+    "firebase_url": "https://shopsnearby-76cd3.firebaseio.com",
+    "project_id": "shopsnearby-76cd3",
+    "storage_bucket": "shopsnearby-76cd3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900310376050:android:7fdd3f971a17d33454eceb",
+        "android_client_info": {
+          "package_name": "com.example.hackathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "900310376050-aptogsmjcojqrf5vi8micnh5gr8prun6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAsTys3BxnLB9EOGP-jXrlz84Zh2yThes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900310376050-aptogsmjcojqrf5vi8micnh5gr8prun6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

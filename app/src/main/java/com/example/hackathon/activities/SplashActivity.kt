@@ -28,7 +28,7 @@ class SplashActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext, LoginActivity::class.java))
             //finish this activity
             finish()
-        },10000)
+        },4000)
 
 
     }

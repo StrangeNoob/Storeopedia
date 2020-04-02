@@ -55,4 +55,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
 //   MapBox Dependencies
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 }

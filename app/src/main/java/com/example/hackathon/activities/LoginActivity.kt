@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
 //        getLastLocation()
 
         cstm_login_btn.setOnClickListener {
-            startActivity(Intent(applicationContext,CustomerDashboardActivity::class.java))
+            startActivity(Intent(applicationContext,CustomerLoginActivity::class.java))
         }
 
         shpkr_login_btn.setOnClickListener {

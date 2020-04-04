@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardPreventCornerOverlap="false">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="125dp"
+            android:layout_height="140dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_airport_shuttle_black_24dp" />
+
+        <TextView
+            android:id="@+id/name_of_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:layout_toEndOf="@+id/image_view"
+            android:text="Name Of Shop"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_of_shop"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="13dp"
+            android:layout_toEndOf="@+id/image_view"
+            android:text="Category"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/opentime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/category"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="14dp"
+            android:layout_toEndOf="@+id/image_view"
+            android:text="Opening and Closing Time" />
+
+
+        <TextView
+            android:id="@+id/phonenumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/opentime"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/image_view"
+            android:text="Phone Number" />
+
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

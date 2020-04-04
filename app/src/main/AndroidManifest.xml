@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.CustomerLoginActivity"/>
+        <activity android:name=".activities.ShopkeeperRegistrationActivity"></activity>
+        <activity android:name=".activities.ShopkeeperLoginActivity" />
+        <activity android:name=".activities.CustomerLoginActivity" />
         <activity android:name=".activities.ShopkeeperDashboardActivity" />
         <activity android:name=".activities.CustomerDashboardActivity" />
         <activity android:name=".activities.LoginActivity" />
@@ -26,13 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

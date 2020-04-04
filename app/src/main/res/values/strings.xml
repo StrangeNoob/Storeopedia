@@ -5,6 +5,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-
+    <!--    MapBox Api Key-->
     <string name="access_token">pk.eyJ1Ijoic3RyYW5nZW5vb2IiLCJhIjoiY2s4ajdnOG1sMDYxYTNmcXE3bmo2dnpidCJ9.86nAsfS__Mzf6Rs91Q3RMg</string>
+
+<!--    Choices in Shop Categories-->
+    <string-array name="Categories">
+        <item>Groceries</item>
+        <item>Medical Shop</item>
+        <item>Dairy Product</item>
+        <item>Others</item>
+    </string-array>
 </resources>

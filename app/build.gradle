@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.android.application'
+
 
 android {
     compileSdkVersion 29
@@ -53,15 +55,15 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 //    Firebase Dependencies
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
-    implementation 'com.google.firebase:firebase-auth:16.1.0'
-    implementation 'com.google.firebase:firebase-core:16.0.6'
-    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
-
+    implementation 'com.google.firebase:firebase-analytics:17.3.0'
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.google.firebase:firebase-firestore:21.4.2'
+    implementation 'com.google.firebase:firebase-core:17.3.0'
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 //   MapBox Dependencies
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.0.0'
 
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
 
 
 }

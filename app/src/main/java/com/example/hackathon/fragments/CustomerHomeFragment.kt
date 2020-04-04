@@ -172,12 +172,6 @@ class CustomerHomeFragment : Fragment() {
             var mLastLocation: Location = locationResult.lastLocation
             Log.d("Last Location",mLastLocation.toString())
             ChangeLocation(LatLng(mLastLocation.latitude,mLastLocation.longitude))
-//            val position = CameraPosition.Builder()
-//                .target(LatLng(mLastLocation.latitude,mLastLocation.longitude))
-//                .zoom(10.0)
-//                .tilt(20.0)
-//                .build()
-//            mapboxMap?.animateCamera(CameraUpdateFactory.newCameraPosition(position), 10000)
         }
     }
 

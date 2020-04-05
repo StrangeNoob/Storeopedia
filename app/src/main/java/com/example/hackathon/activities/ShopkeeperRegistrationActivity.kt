@@ -223,7 +223,7 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
         shopmodel!!.shopName=shopName.text.toString()
         shopmodel!!.ownerName=shopOwner.text.toString()
         shopmodel!!.email=shopEmail.text.toString().toLowerCase()
-        shopmodel!!.phoneNo=shopNo.text.toString().toLong()
+        shopmodel!!.phoneNo=shopNo.text.toString()
         return true
     }
 

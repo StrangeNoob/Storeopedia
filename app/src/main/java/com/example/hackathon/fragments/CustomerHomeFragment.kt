@@ -23,6 +23,7 @@ import com.google.android.gms.location.*
 
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -49,6 +50,7 @@ class CustomerHomeFragment : Fragment() {
 
     companion object {
         fun newInstance() = CustomerHomeFragment()
+
     }
 
      override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,16 +66,10 @@ class CustomerHomeFragment : Fragment() {
              }
          }
          mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
-//         val position = CameraPosition.Builder()
-//             .target(LatLng(20.238804,85.763621))
-//             .zoom(10.0)
-//             .tilt(20.0)
-//             .build()
-//         mapview.getMapAsync { map ->
-//             // Set one of the many styles available
-//             map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1)
-//         }
          getLastLocation()
+         getLocation.setOnClickListener {
+             getLastLocation()
+         }
 
      }
 //    Map Box Setting Starts
@@ -113,16 +109,30 @@ class CustomerHomeFragment : Fragment() {
         mapview.onSaveInstanceState(outState)
     }
 
-    fun ChangeLocation(latLng: LatLng){
-        Log.d("Location in Change()",latLng.toString())
+    fun addMarker(lat: Double, lang:Double){
+        mapview.getMapAsync { map->
+            map?.addMarker(
+                MarkerOptions()
+                .position(LatLng(lat, lang))
+                .title("Home"))
+        }
+    }
+    fun ChangeLocation(lat: Double,lang: Double){
+        Log.d("Location in Change() ",lat.toString()+" , "+lang.toString())
         val position = CameraPosition.Builder()
-            .target(latLng)
+            .target(LatLng(lat,lang))
             .zoom(15.0)
             .tilt(20.0)
             .build()
+
         mapview.getMapAsync { map ->
             // Set one of the many styles available
-            map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 10000)
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(position), 4000)
+            map?.addMarker(
+                MarkerOptions()
+                    .position(LatLng(lat, lang))
+                    .title("Home"))
+
         }
     }
 //    Map Box Setting Ends
@@ -139,7 +149,7 @@ class CustomerHomeFragment : Fragment() {
                         requestNewLocationData()
                     } else {
                         Log.d("Location",location.toString())
-                        ChangeLocation(LatLng(location.latitude,location.longitude))
+                        ChangeLocation(location.latitude,location.longitude)
                     }
                 }
             } else {
@@ -171,7 +181,7 @@ class CustomerHomeFragment : Fragment() {
         override fun onLocationResult(locationResult: LocationResult) {
             var mLastLocation: Location = locationResult.lastLocation
             Log.d("Last Location",mLastLocation.toString())
-            ChangeLocation(LatLng(mLastLocation.latitude,mLastLocation.longitude))
+            ChangeLocation(mLastLocation.latitude,mLastLocation.longitude)
         }
     }
 

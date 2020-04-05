@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.CustomerLoginActivity"/>
+        <activity android:name=".activities.ShopkeeperCompProfileActivity"/>
+        <activity android:name=".activities.ShopkeeperRegistrationActivity" />
+        <activity android:name=".activities.ShopkeeperLoginActivity" />
+        <activity android:name=".activities.CustomerLoginActivity" />
         <activity android:name=".activities.ShopkeeperDashboardActivity" />
         <activity android:name=".activities.CustomerDashboardActivity" />
         <activity android:name=".activities.LoginActivity" />

@@ -12,11 +12,9 @@
     <color name="snackBar" >#F2FA0000</color>
     <color name="colorFont">#A7A7A7</color>
     <color name="colorMainFont">#8C75E3</color>
-
     <color name="colorDotsBack">#E4DFF8</color>
     <color name="colorDotsMain">#8D75E2</color>
     <color name="colorBlack">#263238</color>
     <color name="colorDarkRed">#F2DF0404</color>
-
     <color name="colorDark">#000000</color>
 </resources>

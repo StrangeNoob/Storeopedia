@@ -5,9 +5,10 @@ data class ShopModel (
     var ownerName:String ="",
     var category: String ="",
     var email:String ="",
-    var phoneNo:Long =0,
+    var phoneNo:String="",
     var time:String ="",
+    var open: Boolean= false,
+    var image: String="",
     var shopLocationLat:Double=0.0,
-    var shopLocationLang:Double=0.0,
-    var image: String=""
+    var shopLocationLang:Double=0.0
 )

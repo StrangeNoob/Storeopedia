@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.hackathon.R
-import com.example.hackathon.fragments.CustomerFavFragment
 import com.example.hackathon.fragments.CustomerHomeFragment
 import com.example.hackathon.fragments.CustomerProfileFragment
 import com.example.hackathon.fragments.CustomerShopFragment
@@ -24,11 +23,7 @@ class CustomerDashboardActivity : AppCompatActivity() {
                 openFragment(CustomerShopFragment)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.customer_fav -> {
-                val CustomerFavFragment = CustomerFavFragment.newInstance()
-                openFragment(CustomerFavFragment)
-                return@OnNavigationItemSelectedListener true
-            }
+
             R.id.customer_profile -> {
                 val CustomerProfileFragment = CustomerProfileFragment.newInstance()
                 openFragment(CustomerProfileFragment)

@@ -12,11 +12,6 @@
         android:icon="@drawable/ic_shop"
         android:title="Shop" />
     <item
-        android:id="@+id/customer_fav"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_favorite_border_black_24dp"
-        android:title="Favourites" />
-    <item
         android:id="@+id/customer_profile"
         android:icon="@drawable/ic_profile"
         app:showAsAction="always"

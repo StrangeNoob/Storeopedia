@@ -30,6 +30,7 @@ class CustomerLoginActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var sharedPref: SharedPreferences
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_login2)
@@ -85,6 +86,7 @@ class CustomerLoginActivity : AppCompatActivity() {
 
         cst_create_acc.setOnClickListener {
             sharedPref.edit().putInt("KEY",1).apply()
+            sharedPref.edit().putInt("Registered",1).apply()
             startActivity(Intent(this,CustomerDashboardActivity::class.java))
         }
 
@@ -98,10 +100,16 @@ class CustomerLoginActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK)
             {
                 val user = auth.currentUser //get current user
-                Log.d("User",""+user!!.email+" "+user!!.displayName+" "+user!!.phoneNumber)
                 Toast.makeText(this, ""+user!!.email+"is Logged In",Toast.LENGTH_SHORT).show()
-                cst_email_edittext.setText(user!!.email)
-                cst_name_edittext.setText(user!!.displayName)
+                if(sharedPref.getInt("Register",0)==1){
+                    startActivity(Intent(this,CustomerDashboardActivity::class.java))
+                }
+                else{
+                    Log.d("User",""+user!!.email+" "+user!!.displayName+" "+user!!.phoneNumber)
+                    Toast.makeText(this, ""+user!!.email+"is Logged In",Toast.LENGTH_SHORT).show()
+                    cst_email_edittext.setText(user!!.email)
+                    cst_name_edittext.setText(user!!.displayName)
+                }
             }
 
             else

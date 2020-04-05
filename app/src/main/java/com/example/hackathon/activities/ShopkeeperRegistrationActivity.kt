@@ -207,7 +207,6 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
             shopOwner.text.toString() == null ||
             shopEmail.text.toString() == null ||
             shopNo.text.toString() == null ||
-            fl==0 ||
             shopPassword.text.toString() == null
         ) {
             shopName.error="Shop Info cannot be Blank"
@@ -285,20 +284,23 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
                     Log.d("Shop Details", "Firebase Data Upload Started in "+auth.currentUser!!.email.toString())
                     val user = auth.currentUser
                     var data: ByteArray? = null
-                    val bitmap = (shopImage.getDrawable() as BitmapDrawable).bitmap
-                    fl=1
-                    val baos = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos)
-                    data = baos.toByteArray()
-                    db.collection("Shops").add(shopmodel).addOnSuccessListener {
-                        it.id
+                    if(fl==1){
+                            val bitmap = (shopImage.getDrawable() as BitmapDrawable).bitmap
+                            fl=1
+                            val baos = ByteArrayOutputStream()
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+                            data = baos.toByteArray()
+                    }
+                    else{
+                        fl=0
+                        shopmodel.image="https://i.imgur.com/SPVVTyd.png"
+                    }
+                    db.collection("Shops").document(user!!.uid).set(shopmodel).addOnSuccessListener {
 
-                        val id = it.id
+                        db.collection("Shops").document(user!!.uid)
+                            .update("id",user!!.uid).addOnSuccessListener {
 
-                        db.collection("Shops").document(it.id)
-                            .update("id",it.id).addOnSuccessListener {
-
-                                Log.d("Shop Details", "Firebase Data Upload Started"+id.toString())
+                                Log.d("Shop Details", "Firebase Data Upload Started"+user.uid.toString())
                                 if(fl == 1) {
 
                                     val farmerImgRef = mStorageRef.child("shopImage/" + user!!.uid + ".jpg")
@@ -308,10 +310,10 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
 
                                             farmerImgRef.downloadUrl.addOnSuccessListener {
                                                 Log.d("Shop Details", "Firebase Data Upload Started "+it.toString())
-                                                db.collection("Shops").document(id)
+                                                db.collection("Shops").document(user!!.uid)
                                                     .update("image",it.toString()).addOnSuccessListener {
                                                         Toast.makeText(this,"This Shop is added to database",Toast.LENGTH_SHORT).show()
-                                                        startActivity(Intent(applicationContext,ShopkeeperDashboardActivity::class.java))
+                                                        startActivity(Intent(applicationContext,ShopkeeperCompProfileActivity::class.java))
                                                     }
                                             }
                                         }.addOnProgressListener {
@@ -323,17 +325,17 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
                                         }
                                     }
                                 } else {
-                                    Toast.makeText(this,"Item added to database",Toast.LENGTH_LONG).show()
-                                    onBackPressed()
+                                    Toast.makeText(this,"Shop  added to database",Toast.LENGTH_LONG).show()
+                                    startActivity(Intent(applicationContext,ShopkeeperCompProfileActivity::class.java))
                                 }
 
                             }.addOnFailureListener {
-                                Log.d("Shops Details","Problem Occured in Uploading Pic")
+                                Log.d("Shops Details","Problem Occurred in Uploading Pic")
                                 Toast.makeText(this,"Problem Occurred",Toast.LENGTH_LONG).show()
                             }
                     }
                 }else{
-                    Toast.makeText(this,"Check Your Internet Concetion",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show()
                 }
             }
 

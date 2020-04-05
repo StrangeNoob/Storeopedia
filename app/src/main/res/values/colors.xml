@@ -19,4 +19,9 @@
     <color name="colorDarkRed">#F2DF0404</color>
 
     <color name="colorDark">#000000</color>
+
+    <color name="colourProfleDark">#292b3d</color>
+    <color name="graylight">#fafafa</color>
+    <color name="startblue">#09c6df</color>
+    <color name="endblue">#0bcce6</color>
 </resources>

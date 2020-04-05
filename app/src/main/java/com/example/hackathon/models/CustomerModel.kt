@@ -1,7 +1,9 @@
 package com.example.hackathon.models
 
 data class CustomerModel(
-    var email: String = "",
-    var name: String = "",
-    var phoneNo: Long = 0
+
+        var profilephoto:String =" ",
+        var email: String = "",
+        var name: String = "",
+        var phoneNo: String = ""
 )

@@ -107,7 +107,17 @@ android:orientation="vertical">
         android:text="Phone Number"
         android:textStyle="bold" />
 </LinearLayout>
+
+
 </LinearLayout>
 
+    <Button
+        android:id="@+id/signoutbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Button" />
 
-    </LinearLayout>
+
+</LinearLayout>

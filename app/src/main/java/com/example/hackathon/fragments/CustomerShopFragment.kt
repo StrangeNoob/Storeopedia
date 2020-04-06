@@ -1,18 +1,32 @@
 package com.example.hackathon.fragments
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.os.Looper
+import android.provider.Settings
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 import com.example.hackathon.R
 import com.example.hackathon.adapters.ShopAdapter
 import com.example.hackathon.models.ShopModel
+import com.google.android.gms.location.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import kotlinx.android.synthetic.main.fragment_customer_shop.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -21,6 +35,11 @@ import kotlin.collections.ArrayList
 class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
     // TODO: Rename and change types of parameters
 
+    var adapter : ShopAdapter ?=null
+    val PERMISSION_ID = 42
+    lateinit var mFusedLocationClient: FusedLocationProviderClient
+    var userLat : Double =0.0
+    var userLang : Double =0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,25 +56,24 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var order1 : ShopModel = ShopModel("aaaa","jadsbf","Groceries","ss@gmail.com","1234567890","10:00AM-10:00PM",false,"https://i.imgur.com/SPVVTyd.png")
-        var order2 : ShopModel = ShopModel("aaa1","Owner","Medical","halhsdfl@gmail.com","1234567890","11AM-12PM",true,"https://i.imgur.com/SPVVTyd.png")
-        if(ShopList.isEmpty())
-        {   ShopList.add(order1)
-            ShopList.add(order2)
-        }
-        shopRecyclerView.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = ShopAdapter(ShopList,context)
-        }
+//        var order1 : ShopModel = ShopModel("aaaa","jadsbf","Groceries","ss@gmail.com","1234567890","10:00AM-10:00PM",false,"https://i.imgur.com/SPVVTyd.png")
+//        var order2 : ShopModel = ShopModel("aaa1","Owner","Medical","halhsdfl@gmail.com","1234567890","11AM-12PM",true,"https://i.imgur.com/SPVVTyd.png")
+//        if(ShopList.isEmpty())
+//        {   ShopList.add(order1)
+//            ShopList.add(order2)
+//        }
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
+        adapter = ShopAdapter(ShopList,context!!)
+        shopRecyclerView.adapter = adapter
+        shopRecyclerView.layoutManager = LinearLayoutManager(activity)
+        updateShop()
+
         shopSearch!!.setOnQueryTextListener(this)
         shopSearch!!.setIconifiedByDefault(true)
 
         shopRefresh.setOnRefreshListener {
-            ShopList.add(order1)
-            shopRecyclerView.apply {
-                layoutManager = LinearLayoutManager(activity)
-                adapter = ShopAdapter(ShopList,context)
-            }
+
+            updateShop()
             shopRefresh.isRefreshing=false
         }
     }
@@ -95,4 +113,135 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
     override fun onRefresh() {
 
     }
+
+    // Database Connection and Update
+    fun updateShop(){
+
+        val db = FirebaseFirestore.getInstance()
+
+        val settings = FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(true)
+            .build()
+
+        db.firestoreSettings = settings
+        getLastLocation()
+        shopPB.visibility = View.VISIBLE
+        db.collection("Shops").get().addOnSuccessListener {
+            var list = it.documents
+            if(list.isNotEmpty()){
+
+                ShopList.clear()
+
+                for ( d in list){
+
+                    var shop =d.toObject(ShopModel::class.java)
+                    if(shop !=null){
+                        if(userLat-0.01 <= shop.shopLocationLat
+                            && shop.shopLocationLat <= userLat+0.01
+                            && userLang -0.01 <= shop.shopLocationLang
+                            && shop.shopLocationLang <= userLang+0.01){
+
+                            ShopList.add(shop)
+                        }
+                    }
+                }
+                shopPB.visibility=View.INVISIBLE
+                adapter!!.notifyDataSetChanged()
+            }else{
+                shopPB.visibility=View.INVISIBLE
+            }
+        }
+    }
+
+    // User Location
+
+    @SuppressLint("MissingPermission")
+    public fun getLastLocation() {
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+
+                mFusedLocationClient.lastLocation.addOnCompleteListener(activity!!) { task ->
+                    var location: Location? = task.result
+                    if (location == null) {
+                        requestNewLocationData()
+                    } else {
+                        Log.d("Location",location.toString())
+                        userLat=location.latitude
+                        userLang=location.longitude
+                    }
+                }
+            } else {
+                Toast.makeText(context!!, "Turn on location", Toast.LENGTH_LONG).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        } else {
+            requestPermissions()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestNewLocationData() {
+        var mLocationRequest = LocationRequest()
+        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        mLocationRequest.interval = 0
+        mLocationRequest.fastestInterval = 0
+        mLocationRequest.numUpdates = 1
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
+        mFusedLocationClient!!.requestLocationUpdates(
+            mLocationRequest, mLocationCallback,
+            Looper.myLooper()
+        )
+    }
+
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            var mLastLocation: Location = locationResult.lastLocation
+            Log.d("Last Location",mLastLocation.toString())
+            userLat=mLastLocation.latitude
+            userLang=mLastLocation.longitude
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        var locationManager: LocationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                context!!,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                context!!,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            activity!!,
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+            PERMISSION_ID
+        )
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == PERMISSION_ID) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                getLastLocation()
+            }
+        }
+    }
+
+
 }

@@ -1,14 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ShopkeeperProfileFragment">
+    tools:context=".MainActivity">
 
-    <!-- TODO: Update blank fragment layout -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileimage"
+        android:layout_width = "120dp"
+        android:layout_height = "120dp"
+        android:layout_centerHorizontal = "true"
+        android:layout_marginTop ="30dp"
+        android:src="@drawable/logo"
+        />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/profilename"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:text="Name of Shop"
+        android:textColor="#000"
+        android:layout_below="@id/profileimage"
+        android:layout_centerHorizontal = "true"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textSize="18sp"
+        />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/category"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:text="Category"
+        android:layout_below="@id/profilename"
+        android:layout_centerHorizontal = "true"
+        android:layout_marginTop="5dp"
+        />
+
+    <ImageView
+        android:id="@+id/design"
+        android:layout_width = "match_parent"
+        android:layout_height = "100dp"
+        android:src="@drawable/design"
+        android:layout_below="@id/category"
+        />
+
+    <LinearLayout
+        android:id="@+id/linearlayout_1"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/design"
+        android:layout_marginTop="20dp"
+        >
+
+        <ImageView
+            android:layout_width = "36dp"
+            android:layout_height = "36dp"
+            android:src="@drawable/ic_person"
+            android:layout_marginLeft="70dp"
+            />
+        <TextView
+            android:id="@+id/ownername"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:text="Name of Shop Owner"
+            android:textSize = "18sp"
+            android:textColor="#000"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_2"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/linearlayout_1"
+        android:layout_marginTop="20dp"
+        >
+
+        <ImageView
+            android:layout_width = "36dp"
+            android:layout_height = "36dp"
+            android:src="@drawable/ic_mail"
+            android:layout_marginLeft="70dp"
+            />
+        <TextView
+            android:id="@+id/email"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:text="E-mail id"
+            android:textSize = "18sp"
+            android:textColor="#000"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_3"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/linearlayout_2"
+        android:layout_marginTop="20dp"
+        >
+
+        <ImageView
+            android:layout_width = "36dp"
+            android:layout_height = "36dp"
+            android:src="@drawable/ic_phone"
+            android:layout_marginLeft="70dp"
+            />
+        <TextView
+            android:id="@+id/phonenumber"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:text="Phone Number"
+            android:textSize = "18sp"
+            android:textColor="#000"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_4"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/linearlayout_3"
+        android:layout_marginTop="20dp"
+        >
+
+        <ImageView
+            android:layout_width = "36dp"
+            android:layout_height = "36dp"
+            android:src="@drawable/ic_time"
+            android:layout_marginLeft="70dp"
+            />
+        <TextView
+            android:id="@+id/timings"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:text="Timings of Shop"
+            android:textSize = "18sp"
+            android:textColor="#000"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_logout"
+        android:layout_width = "match_parent"
+        android:layout_height = "wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/logout" />
+
+        <Button
+            android:id="@+id/signoutbtn"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:text="Sign Out"
+            android:textSize = "18sp"
+            android:textColor="#000"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

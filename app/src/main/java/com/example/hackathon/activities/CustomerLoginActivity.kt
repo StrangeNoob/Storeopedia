@@ -12,6 +12,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import com.example.hackathon.R
+import com.example.hackathon.models.CustomerModel
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
@@ -29,7 +30,7 @@ class CustomerLoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var sharedPref: SharedPreferences
-
+    private lateinit var customerModel : CustomerModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +86,13 @@ class CustomerLoginActivity : AppCompatActivity() {
         // Action Listener in Create Acc Button
 
         cst_create_acc.setOnClickListener {
+
+            customerModel!!.phoneNo = cst_phone_edittext.text.toString()
+            db.collection("Users").document(auth.currentUser!!.uid).set(customerModel!!).addOnSuccessListener {
+                Toast.makeText(applicationContext,"User is added to Database",Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(applicationContext,"Problem Occurred",Toast.LENGTH_SHORT).show()
+            }
             sharedPref.edit().putInt("KEY",1).apply()
             sharedPref.edit().putInt("Registered",1).apply()
             startActivity(Intent(this,CustomerDashboardActivity::class.java))
@@ -101,7 +109,8 @@ class CustomerLoginActivity : AppCompatActivity() {
             {
                 val user = auth.currentUser //get current user
                 Toast.makeText(this, ""+user!!.email+"is Logged In",Toast.LENGTH_SHORT).show()
-                if(sharedPref.getInt("Register",0)==1){
+
+                if(sharedPref.getInt("Registered",0)==1){
                     startActivity(Intent(this,CustomerDashboardActivity::class.java))
                 }
                 else{
@@ -109,6 +118,7 @@ class CustomerLoginActivity : AppCompatActivity() {
                     Toast.makeText(this, ""+user!!.email+"is Logged In",Toast.LENGTH_SHORT).show()
                     cst_email_edittext.setText(user!!.email)
                     cst_name_edittext.setText(user!!.displayName)
+                    customerModel = CustomerModel(user.email!!,user.displayName!!)
                 }
             }
 

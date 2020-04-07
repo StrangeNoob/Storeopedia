@@ -88,10 +88,7 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
         create_shop_btn.setOnClickListener{
             getLastLocation()
             if(validateInput()){
-                Log.d("Shop Details", "Firebase Data Upload Started")
                 createShopAccount()
-                Log.d("Shop Details","Firebase Data Upload Done")
-
             }
         }
     }

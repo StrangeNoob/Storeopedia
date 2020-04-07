@@ -65,7 +65,7 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
         adapter = ShopAdapter(ShopList,context!!)
         shopRecyclerView.adapter = adapter
-        shopPB.visibility=View.INVISIBLE
+        shopPB?.visibility=View.INVISIBLE
         shopRecyclerView.layoutManager = LinearLayoutManager(activity)
         updateShop()
 
@@ -126,7 +126,7 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
 
         db.firestoreSettings = settings
         getLastLocation()
-        shopPB.visibility = View.VISIBLE
+        shopPB?.visibility = View.VISIBLE
         db.collection("Shops").get().addOnSuccessListener {
             var list = it.documents
             if(list.isNotEmpty()){
@@ -146,10 +146,10 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
                         }
                     }
                 }
-                shopPB.visibility=View.INVISIBLE
+                shopPB?.visibility=View.INVISIBLE
                 adapter!!.notifyDataSetChanged()
             }else{
-                shopPB.visibility=View.INVISIBLE
+                shopPB?.visibility=View.INVISIBLE
             }
         }
     }

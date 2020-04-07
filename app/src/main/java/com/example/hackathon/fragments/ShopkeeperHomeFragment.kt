@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.bumptech.glide.Glide
 
 import com.example.hackathon.R
 import com.example.hackathon.models.ShopModel
@@ -50,8 +51,10 @@ class ShopkeeperHomeFragment : Fragment() {
             var shop = it.toObject(ShopModel::class.java)
             if(shop!!.open){
                 shopOpenCloseSwitch.setState(FancySwitch.State.ON)
+                 imageView4.setImageDrawable(context!!.getDrawable(R.drawable.open))
             }else{
                 shopOpenCloseSwitch.setState(FancySwitch.State.OFF)
+                imageView4.setImageDrawable(context!!.getDrawable(R.drawable.closed))
             }
 
         }.addOnFailureListener {
@@ -66,12 +69,14 @@ class ShopkeeperHomeFragment : Fragment() {
                     Log.d("Users",user!!.uid)
                     db.collection("Shops").document(user!!.uid).update("open",true).addOnSuccessListener {
                         Log.d("Users", newState.name)
+                        imageView4.setImageDrawable(context!!.getDrawable(R.drawable.open))
                         Toast.makeText(context," Shop is Open", Toast.LENGTH_SHORT).show()
                     }.addOnFailureListener {
                         Log.d("Users", it.message)
                     }
                 }else{
                     db.collection("Shops").document(user!!.uid).update("open",false).addOnSuccessListener {
+                        imageView4.setImageDrawable(context!!.getDrawable(R.drawable.closed))
                         Toast.makeText(context," Shop is Close", Toast.LENGTH_SHORT).show()
                     }.addOnFailureListener {
                         Log.d("Users", it.toString())

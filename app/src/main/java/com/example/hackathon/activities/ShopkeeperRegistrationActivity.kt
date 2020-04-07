@@ -60,7 +60,7 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
             lifecycleOwner = this@ShopkeeperRegistrationActivity
             setOnSpinnerItemSelectedListener<String> { index, text ->
                 if(text.contentEquals("Others")){
-                    textInputLayout9.visibility=visibility
+                    textInputLayout9.visibility=View.VISIBLE
                 }else{
                     textInputLayout9.visibility=View.GONE
                     shopmodel.category=text

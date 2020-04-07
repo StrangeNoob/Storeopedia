@@ -46,6 +46,7 @@ class ShopkeeperProfileFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         val user = auth.currentUser
+
         Log.d("Shop Details", auth.currentUser?.email)
         progressBar2.visibility = View.VISIBLE
         db.collection("Shops").document(user!!.uid).get().addOnSuccessListener {

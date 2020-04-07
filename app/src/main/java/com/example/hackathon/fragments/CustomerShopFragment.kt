@@ -65,6 +65,7 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
         adapter = ShopAdapter(ShopList,context!!)
         shopRecyclerView.adapter = adapter
+        shopPB.visibility=View.INVISIBLE
         shopRecyclerView.layoutManager = LinearLayoutManager(activity)
         updateShop()
 

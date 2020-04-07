@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.bumptech.glide.Glide
 
 import com.example.hackathon.R
 import com.example.hackathon.models.ShopModel
@@ -50,8 +51,10 @@ class ShopkeeperHomeFragment : Fragment() {
             var shop = it.toObject(ShopModel::class.java)
             if(shop!!.open){
                 shopOpenCloseSwitch.setState(FancySwitch.State.ON)
+
             }else{
                 shopOpenCloseSwitch.setState(FancySwitch.State.OFF)
+
             }
 
         }.addOnFailureListener {

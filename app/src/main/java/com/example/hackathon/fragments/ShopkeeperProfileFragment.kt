@@ -48,12 +48,9 @@ class ShopkeeperProfileFragment : Fragment() {
         val user = auth.currentUser
 
         Log.d("Shop Details", auth.currentUser?.email)
-        progressBar2?.visibility = View.VISIBLE
         db.collection("Shops").document(user!!.uid).get().addOnSuccessListener {
             var shop = it.toObject(ShopModel::class.java)
             Log.d("Shop Details", shop.toString())
-
-
             Glide.with(context!!).load(shop!!.image).into(profileimage)
             ownername.text = shop!!.ownerName
             profilename.text = shop!!.shopName
@@ -61,7 +58,6 @@ class ShopkeeperProfileFragment : Fragment() {
             category.text= shop!!.category
             phonenumber.text = shop!!.phoneNo
             timings.text = shop!!.time
-            progressBar2?.visibility = View.INVISIBLE
         }
 
         signoutbtn.setOnClickListener {

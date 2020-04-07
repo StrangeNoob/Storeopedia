@@ -1,6 +1,8 @@
 package com.example.hackathon.adapters
 
+
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.hackathon.R
+import com.example.hackathon.activities.ViewShopProfile
 import com.example.hackathon.models.ShopModel
 import kotlinx.android.synthetic.main.shopcardview.view.*
 class ShopAdapter(val shops: ArrayList<ShopModel>,val context: Context): RecyclerView.Adapter<ShopViewHolder>() {
@@ -31,6 +34,16 @@ class ShopAdapter(val shops: ArrayList<ShopModel>,val context: Context): Recycle
             holder.cardView.background = context.getDrawable(R.drawable.rounded_cornerectangle_gray)
         }
         holder.viewMore.setOnClickListener {
+            var intent = Intent(context!!, ViewShopProfile::class.java)
+            intent.putExtra("ShopName",shops.get(position).shopName)
+            intent.putExtra("ShopOwnerName",shops.get(position).ownerName)
+            intent.putExtra("ShopCategory",shops.get(position).category)
+            intent.putExtra("ShopPhonNo",shops.get(position).phoneNo)
+            intent.putExtra("ShopLocationLat",shops.get(position).shopLocationLat)
+            intent.putExtra("ShopLocationLang",shops.get(position).shopLocationLang)
+            intent.putExtra("ShopTiming",shops.get(position).time)
+            intent.putExtra("ShopEmail",shops.get(position).email)
+            context.startActivity(intent)
 
             Log.d("Shop Details",shops.get(position).shopName+"is Clicked")
         }

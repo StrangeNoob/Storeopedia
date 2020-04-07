@@ -15,15 +15,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:src="@drawable/logo" />
-    <ProgressBar
-        android:id="@+id/progressBar2"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="91dp"
-        android:layout_height="91dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="177dp"
-        android:layout_marginBottom="412dp" />
 
     <TextView
         android:id="@+id/profilename"

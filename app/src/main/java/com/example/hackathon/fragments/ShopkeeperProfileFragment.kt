@@ -48,7 +48,7 @@ class ShopkeeperProfileFragment : Fragment() {
         val user = auth.currentUser
 
         Log.d("Shop Details", auth.currentUser?.email)
-        progressBar2.visibility = View.VISIBLE
+        progressBar2?.visibility = View.VISIBLE
         db.collection("Shops").document(user!!.uid).get().addOnSuccessListener {
             var shop = it.toObject(ShopModel::class.java)
             Log.d("Shop Details", shop.toString())
@@ -61,7 +61,7 @@ class ShopkeeperProfileFragment : Fragment() {
             category.text= shop!!.category
             phonenumber.text = shop!!.phoneNo
             timings.text = shop!!.time
-            progressBar2.visibility = View.INVISIBLE
+            progressBar2?.visibility = View.INVISIBLE
         }
 
         signoutbtn.setOnClickListener {

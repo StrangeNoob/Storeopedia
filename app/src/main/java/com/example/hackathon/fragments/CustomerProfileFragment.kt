@@ -51,13 +51,13 @@ class CustomerProfileFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
         val user = auth.currentUser
         Log.d("Shop Details", auth.currentUser?.email)
-        cst_profile_progress.visibility = View.VISIBLE
+        cst_profile_progress?.visibility = View.VISIBLE
         db.collection("Users").document(user!!.uid).get().addOnSuccessListener {
             var customerModel = it.toObject(CustomerModel::class.java)
             cst_name.text = customerModel!!.name
             cst_email.text = customerModel!!.email
             cst_phonenumber.text = customerModel!!.phoneNo
-            cst_profile_progress.visibility = View.INVISIBLE
+            cst_profile_progress?.visibility = View.INVISIBLE
         }
 
         cst_signoutbtn.setOnClickListener {

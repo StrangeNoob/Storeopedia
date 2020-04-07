@@ -69,9 +69,12 @@ dependencies {
     implementation "com.github.skydoves:powerspinner:1.0.5"
 //  Time Picker Dependencies
     implementation 'com.github.ifr0z:timepickercompact:1.0'
-//    Glide Depencies
+//    Glide Dependencies
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
-
+//  Circle Image Dependencies
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+//  Fancy Switch Dependencies
+    implementation 'com.github.ngallazzi:FancySwitch:master-SNAPSHOT'
+
 }

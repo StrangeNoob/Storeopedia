@@ -60,9 +60,9 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
             lifecycleOwner = this@ShopkeeperRegistrationActivity
             setOnSpinnerItemSelectedListener<String> { index, text ->
                 if(text.contentEquals("Others")){
-                    shopDescription.visibility=visibility
+                    textInputLayout9.visibility=View.VISIBLE
                 }else{
-                    shopDescription.visibility=View.INVISIBLE
+                    textInputLayout9.visibility=View.GONE
                     shopmodel.category=text
                 }
             }
@@ -70,9 +70,6 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
 
         shopImage.setOnClickListener{
             captureImage()
-        }
-        shopLocation.setOnClickListener{
-            getLastLocation()
         }
         shopDescription.addTextChangedListener(object : TextWatcher {
 
@@ -89,11 +86,9 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
             }
         })
         create_shop_btn.setOnClickListener{
+            getLastLocation()
             if(validateInput()){
-                Log.d("Shop Details", "Firebase Data Upload Started")
                 createShopAccount()
-                Log.d("Shop Details","Firebase Data Upload Done")
-
             }
         }
     }

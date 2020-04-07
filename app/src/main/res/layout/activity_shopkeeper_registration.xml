@@ -166,15 +166,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/shopNo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Phone No."
-                    android:imeOptions="actionNext"
-                    android:inputType="phone"
-                    android:singleLine="true"
-                    android:textSize="18dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.skydoves.powerspinner.PowerSpinnerView
@@ -219,6 +210,8 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
+                android:layout_marginBottom="18dp"
+                app:layout_constraintBottom_toTopOf="@+id/create_shop_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinnerView">
@@ -229,22 +222,17 @@
                     android:layout_height="wrap_content"
                     android:hint="Small Description"
                     android:visibility="gone" />
-            </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/shopLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_corner"
-                android:padding="15dp"
-                android:text="Shop Location"
-                android:textAlignment="center"
-                android:textColor="@color/colorWhite"
-                android:textSize="12dp"
-                app:layout_constraintBottom_toTopOf="@+id/create_shop_btn"
-                app:layout_constraintStart_toStartOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout9" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/shopNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone No."
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:textSize="18dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/create_shop_btn"
@@ -258,7 +246,8 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textInputLayout9" />
+                app:layout_constraintEnd_toEndOf="@+id/textInputLayout9"
+                app:layout_constraintStart_toStartOf="@+id/textInputLayout9" />
 
             <TextView
                 android:id="@+id/textView4"

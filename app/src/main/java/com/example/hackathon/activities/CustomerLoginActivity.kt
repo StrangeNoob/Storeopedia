@@ -95,6 +95,7 @@ class CustomerLoginActivity : AppCompatActivity() {
             }
             sharedPref.edit().putInt("KEY",1).apply()
             sharedPref.edit().putInt("Registered",1).apply()
+            Log.d("Shared Pref ",sharedPref.getInt("KEY",0).toString())
             startActivity(Intent(this,CustomerDashboardActivity::class.java))
         }
 

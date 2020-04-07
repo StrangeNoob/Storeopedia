@@ -71,9 +71,9 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
         shopImage.setOnClickListener{
             captureImage()
         }
-        shopLocation.setOnClickListener{
-            getLastLocation()
-        }
+//        shopLocation.setOnClickListener{
+//
+//        }
         shopDescription.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
@@ -89,6 +89,7 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
             }
         })
         create_shop_btn.setOnClickListener{
+            getLastLocation()
             if(validateInput()){
                 Log.d("Shop Details", "Firebase Data Upload Started")
                 createShopAccount()

@@ -19,3 +19,4 @@ shop. A map view is provided in the application for easy identification, locatio
 that the crowd is as less as possible.</p>
 <p>2. Addition of online payment gateways in the app to promote the contactless transfer of money.</p>
 <p>3. Use of google maps instead of mapbox which is currently being used to get a more detailed map-view.</p>
+<p>4.Locations of food shelters and night shelters for the needy can be setup.</p>

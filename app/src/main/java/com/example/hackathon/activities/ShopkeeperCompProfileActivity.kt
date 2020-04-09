@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuthSettings
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_shopkeeper_comp_profile.*
+import kotlinx.android.synthetic.main.shopcardview.*
 
 class ShopkeeperCompProfileActivity : AppCompatActivity() {
 
@@ -34,10 +35,16 @@ class ShopkeeperCompProfileActivity : AppCompatActivity() {
 
     }
     private fun getTime() : String{
+        Log.d("User Details",openingTime.toString())
+        if(openingTime.minute < 9){
+            openingTime.minute = ("0"+openingTime.minute.toString()).toInt()
+        }
+        if(closingTime.minute < 9){
+            closingTime.minute = ("0"+closingTime.minute.toString()).toInt()
+        }
         if(openingTime.hour > 12 && closingTime.hour > 12 ){
             OpeningTime = (openingTime.hour-12).toString()+":"+openingTime.minute.toString()+"PM"
             ClosingTime = (closingTime.hour-12).toString()+":"+closingTime.minute.toString()+"PM"
-
         }else if( openingTime.hour < 12 && closingTime.hour > 12){
             OpeningTime = (openingTime.hour).toString()+":"+openingTime.minute.toString()+"AM"
             ClosingTime = (closingTime.hour-12).toString()+":"+closingTime.minute.toString()+"PM"
@@ -48,6 +55,7 @@ class ShopkeeperCompProfileActivity : AppCompatActivity() {
             OpeningTime = (openingTime.hour).toString()+":"+openingTime.minute.toString()+"AM"
             ClosingTime = (closingTime.hour).toString()+":"+closingTime.minute.toString()+"AM"
         }
+        Log.d("User Details","$OpeningTime-$ClosingTime")
         return "$OpeningTime-$ClosingTime"
     }
 

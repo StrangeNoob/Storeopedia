@@ -54,9 +54,9 @@ class CustomerProfileFragment : Fragment() {
         cst_profile_progress?.visibility = View.VISIBLE
         db.collection("Users").document(user!!.uid).get().addOnSuccessListener {
             var customerModel = it.toObject(CustomerModel::class.java)
-            cst_name.text = customerModel!!.name
-            cst_email.text = customerModel!!.email
-            cst_phonenumber.text = customerModel!!.phoneNo
+            cst_name?.text = customerModel!!.name
+            cst_email?.text = customerModel!!.email
+            cst_phonenumber?.text = customerModel!!.phoneNo
             cst_profile_progress?.visibility = View.INVISIBLE
         }
 

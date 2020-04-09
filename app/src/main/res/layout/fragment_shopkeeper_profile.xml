@@ -18,26 +18,24 @@
 
     <TextView
         android:id="@+id/profilename"
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:text="Name of Shop"
-        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/profileimage"
-        android:layout_centerHorizontal = "true"
-        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
+        android:text="@string/loading"
+        android:textColor="#000"
         android:textSize="18sp"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/category"
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:text="Category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/profilename"
-        android:layout_centerHorizontal = "true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        />
+        android:text="@string/loading" />
 
     <ImageView
         android:id="@+id/design"
@@ -67,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:text="Name of Shop Owner"
+            android:text="@string/loading"
             android:textColor="#000"
             android:textSize="18sp" />
 
@@ -93,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
-            android:text="E-mail id"
+            android:text="@string/loading"
             android:textColor="#000"
             android:textSize="18sp" />
 
@@ -119,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
-            android:text="Phone Number"
+            android:text="@string/loading"
             android:textColor="#000"
             android:textSize="18sp" />
 
@@ -145,7 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
-            android:text="Timings of Shop"
+            android:text="@string/loading"
             android:textColor="#000"
             android:textSize="18sp" />
 

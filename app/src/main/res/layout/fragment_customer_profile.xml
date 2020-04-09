@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:text="Name"
+                android:text="@string/loading"
                 android:textColor="#000"
                 android:textSize="18sp" />
 
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
-                android:text="E-mail id"
+                android:text="@string/loading"
                 android:textColor="#000"
                 android:textSize="18sp" />
 
@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
-                android:text="Phone Number"
+                android:text="@string/loading"
                 android:textColor="#000"
                 android:textSize="18sp" />
 

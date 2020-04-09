@@ -117,7 +117,7 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback, PermissionsListener 
             .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
             .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
             .build()
-        locationEngine.requestLocationUpdates(request, callback, Looper.getMainLooper())
+//        locationEngine.requestLocationUpdates(request, callback, Looper.getMainLooper())
         locationEngine.getLastLocation(callback)
     }
 
@@ -145,7 +145,6 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback, PermissionsListener 
                         .build()
                     map.animateCamera(CameraUpdateFactory.newCameraPosition(position))
                     shopFromDB(latLng)
-//                    initAddMarker(map)
                 }
             }
 
@@ -157,24 +156,25 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback, PermissionsListener 
     private fun initAddMarker(map: MapboxMap) {
         val symbolLayers = ArrayList<Feature>()
         for(d in shopList)
-            symbolLayers.add(Feature.fromGeometry(Point.fromLngLat(d.shopLocationLang, d.shopLocationLat)))
-        map.setStyle(
-            Style.Builder().fromUri(Style.MAPBOX_STREETS)
-                .withImage(ICON_ID, BitmapUtils
-                    .getBitmapFromDrawable(ContextCompat.getDrawable(context!!, R.drawable.mapbox_marker_icon_default))!!)
-                .withSource(GeoJsonSource(SOURCE_ID, FeatureCollection.fromFeatures(symbolLayers)))
-                .withLayer(
-                    SymbolLayer(LAYER_ID, SOURCE_ID)
-                        .withProperties(
-                            PropertyFactory.iconImage(ICON_ID),
-                            PropertyFactory.iconSize(1.0f),
-                            PropertyFactory.iconAllowOverlap(true),
-                            PropertyFactory.iconIgnorePlacement(true)
-                        ))
-        )
-        {
-            //Here is style loaded
-        }
+            map.addMarker(MarkerOptions().position(LatLng(d.shopLocationLat,d.shopLocationLang)).title(d.shopName).snippet(d.category+"\n"))
+//            symbolLayers.add(Feature.fromGeometry(Point.fromLngLat(d.shopLocationLang, d.shopLocationLat)))
+//        map.setStyle(
+//            Style.Builder().fromUri(Style.MAPBOX_STREETS)
+//                .withImage(ICON_ID, BitmapUtils
+//                    .getBitmapFromDrawable(ContextCompat.getDrawable(context!!, R.drawable.mapbox_marker_icon_default))!!)
+//                .withSource(GeoJsonSource(SOURCE_ID, FeatureCollection.fromFeatures(symbolLayers)))
+//                .withLayer(
+//                    SymbolLayer(LAYER_ID, SOURCE_ID)
+//                        .withProperties(
+//                            PropertyFactory.iconImage(ICON_ID),
+//                            PropertyFactory.iconSize(1.0f),
+//                            PropertyFactory.iconAllowOverlap(true),
+//                            PropertyFactory.iconIgnorePlacement(true)
+//                        ))
+//        )
+//        {
+//            //Here is style loaded
+//        }
     }
 
     override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
@@ -254,15 +254,15 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback, PermissionsListener 
                         }
                     }
                 }
-//                Toast.makeText(applicationContext!!,"Shop List has"+shopList.size.toString()+" Elements",Toast.LENGTH_LONG).show()
-
+                Log.d("User Details","Shop List has "+shopList.size.toString()+" Elements")
+                Toast.makeText(context!!,"Your Neighbourhood has "+shopList.size.toString()+" Shops ",Toast.LENGTH_LONG).show()
+                if(shopList.size !=0) initAddMarker(map)
             }
         }.addOnFailureListener {
             Toast.makeText(context!!,"Check your Internet",Toast.LENGTH_SHORT).show()
         }
-        Log.d("User Details","Shop List has "+shopList.size.toString()+" Elements")
-        if(shopList.size !=0) initAddMarker(map)
     }
+
 
 
 }

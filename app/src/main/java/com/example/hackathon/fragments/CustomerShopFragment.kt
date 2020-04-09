@@ -70,7 +70,7 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
         updateShop()
 
         shopSearch!!.setOnQueryTextListener(this)
-        shopSearch!!.setIconifiedByDefault(false)
+//        shopSearch!!.setIconifiedByDefault(false)
 
         shopRefresh.setOnRefreshListener {
 

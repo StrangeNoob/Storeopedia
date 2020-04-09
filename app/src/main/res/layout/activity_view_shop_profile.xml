@@ -10,7 +10,7 @@
         android:id="@+id/menu_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/curved_bg"
+        android:background="@color/colorWhite"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintTop_toTopOf="parent">
@@ -235,7 +235,7 @@
                     style="@style/TextDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/loading" />
+                    android:text="Click On the Icon to For Navigation" />
 
             </LinearLayout>
 

@@ -122,7 +122,8 @@ class CustomerLoginActivity : AppCompatActivity() {
     private fun showSignInOptions() {
         startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
             .setAvailableProviders(providers)
-//            .setTheme(R.style.AppTheme_NoActionBar)
+            .setLogo(R.drawable.splashimage)
+            .setTheme(R.style.AppTheme_NoActionBar)
             .build(),MY_REQUEST_CODE
         )
     }

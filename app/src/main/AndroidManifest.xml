@@ -13,7 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".activities.ShopNavigation"></activity>
         <activity android:name=".activities.ViewShopProfile" />
         <activity android:name=".activities.ShopkeeperCompProfileActivity" />
         <activity android:name=".activities.ShopkeeperRegistrationActivity" />

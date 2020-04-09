@@ -50,7 +50,6 @@ class CustomerProfileFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         val user = auth.currentUser
-        Log.d("Shop Details", auth.currentUser?.email)
         cst_profile_progress?.visibility = View.VISIBLE
         db.collection("Users").document(user!!.uid).get().addOnSuccessListener {
             var customerModel = it.toObject(CustomerModel::class.java)

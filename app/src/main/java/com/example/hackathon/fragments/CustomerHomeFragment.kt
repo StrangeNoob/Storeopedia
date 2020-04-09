@@ -228,7 +228,9 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback, PermissionsListener 
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        map_view.onSaveInstanceState(outState)
+        if (outState !=null){
+            map_view.onSaveInstanceState(outState)
+        }
     }
 
     private fun shopFromDB(userLatLng: LatLng) {

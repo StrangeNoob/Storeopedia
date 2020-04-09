@@ -250,10 +250,10 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback, PermissionsListener 
 
                     var shop = d.toObject(ShopModel::class.java)
                     if (shop != null) {
-                        if(     userLat-0.01 <= shop.shopLocationLat
-                            && shop.shopLocationLat <= userLat+0.01
-                            && userLang -0.01 <= shop.shopLocationLang
-                            && shop.shopLocationLang <= userLang+0.01){
+                        if(     userLat-0.2 <= shop.shopLocationLat
+                            && shop.shopLocationLat <= userLat+0.2
+                            && userLang-0.2 <= shop.shopLocationLang
+                            && shop.shopLocationLang <= userLang+0.2){
 
                             shopList.add(shop)
                         }

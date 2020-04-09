@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
@@ -55,7 +56,7 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback, PermissionsListener 
     private lateinit var permissionsManager: PermissionsManager
     private lateinit var locationEngine: LocationEngine
     private lateinit var callback: LocationChangeListeningCallback
-
+    private lateinit var sharedPref: SharedPreferences
     private var shopList : ArrayList<ShopModel> = ArrayList()
 
 
@@ -82,7 +83,9 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback, PermissionsListener 
         super.onViewCreated(view, savedInstanceState)
          map_view.onCreate(savedInstanceState)
          map_view.getMapAsync(this)
-
+         sharedPref = activity!!.getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+         sharedPref.edit().putInt("KEY",1).apply()
+         Log.d("Shared Prefs ",sharedPref.getInt("KEY",0).toString())
      }
 
     override fun onMapReady(mapboxMap: MapboxMap) {

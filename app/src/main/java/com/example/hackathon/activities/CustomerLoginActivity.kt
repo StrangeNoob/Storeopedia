@@ -115,6 +115,7 @@ class CustomerLoginActivity : AppCompatActivity() {
             return false
         }else if(cst_phone_edittext.text.toString().length != 10){
             cst_phone_edittext.error = " You should enter valid phone no"
+            return false
         }
         return true
     }

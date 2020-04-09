@@ -13,7 +13,10 @@ import com.bumptech.glide.Glide
 import com.example.hackathon.R
 import com.example.hackathon.activities.ViewShopProfile
 import com.example.hackathon.models.ShopModel
+import kotlinx.android.synthetic.main.fragment_shopkeeper_profile.view.*
 import kotlinx.android.synthetic.main.shopcardview.view.*
+import kotlinx.android.synthetic.main.shopcardview.view.category
+
 class ShopAdapter(val shops: ArrayList<ShopModel>,val context: Context): RecyclerView.Adapter<ShopViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopViewHolder {
         return ShopViewHolder(LayoutInflater.from(context).inflate(R.layout.shopcardview,parent,false))
@@ -43,6 +46,7 @@ class ShopAdapter(val shops: ArrayList<ShopModel>,val context: Context): Recycle
             intent.putExtra("ShopLocationLang",shops.get(position).shopLocationLang)
             intent.putExtra("ShopTiming",shops.get(position).time)
             intent.putExtra("ShopEmail",shops.get(position).email)
+            intent.putExtra("ShopImage",shops.get(position).image)
             context.startActivity(intent)
 
             Log.d("Shop Details",shops.get(position).shopName+"is Clicked")

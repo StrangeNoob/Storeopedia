@@ -1,5 +1,6 @@
 package com.example.hackathon.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -45,5 +46,11 @@ class CustomerDashboardActivity : AppCompatActivity() {
         openFragment(CustomerHomeFragment.newInstance())
         val bottomNavigation: BottomNavigationView = findViewById(R.id.customer_nav)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+    }
+    override fun onBackPressed() {
+        val a = Intent(Intent.ACTION_MAIN)
+        a.addCategory(Intent.CATEGORY_HOME)
+        a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(a)
     }
 }

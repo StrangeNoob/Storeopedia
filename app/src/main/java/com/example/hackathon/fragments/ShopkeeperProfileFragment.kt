@@ -52,12 +52,12 @@ class ShopkeeperProfileFragment : Fragment() {
             var shop = it.toObject(ShopModel::class.java)
             Log.d("Shop Details", shop.toString())
             Glide.with(context!!).load(shop!!.image).into(profileimage)
-            ownername.text = shop!!.ownerName
-            profilename.text = shop!!.shopName
-            email.text = shop!!.email
-            category.text= shop!!.category
-            phonenumber.text = shop!!.phoneNo
-            timings.text = shop!!.time
+            ownername?.text = shop!!.ownerName
+            profilename?.text = shop!!.shopName
+            email?.text = shop!!.email
+            category?.text= shop!!.category
+            phonenumber?.text = shop!!.phoneNo
+            timings?.text = shop!!.time
         }
 
         signoutbtn.setOnClickListener {

@@ -29,7 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:queryBackground="@android:color/transparent"
-            app:queryHint="Search for Order"
+            app:queryHint="Search for Name or Category"
             app:searchIcon="@drawable/ic_baseline_search_24px" />
 
 

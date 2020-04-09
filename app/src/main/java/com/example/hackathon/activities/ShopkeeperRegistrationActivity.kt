@@ -40,7 +40,7 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
 
     val PERMISSION_ID = 42
     lateinit var mFusedLocationClient: FusedLocationProviderClient
-    lateinit var shopmodel: ShopModel
+    var shopmodel: ShopModel = ShopModel()
     var mStorageRef = FirebaseStorage.getInstance().getReference()
     lateinit var auth : FirebaseAuth
     lateinit var db : FirebaseFirestore
@@ -55,7 +55,6 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        shopmodel= ShopModel()
         spinnerView.apply {
             lifecycleOwner = this@ShopkeeperRegistrationActivity
             setOnSpinnerItemSelectedListener<String> { index, text ->
@@ -66,6 +65,7 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
                     shopmodel.category=text
                 }
             }
+            shopName.onFocusChangeListener = View.OnFocusChangeListener{ view,focus -> getLastLocation() }
         }
 
         shopImage.setOnClickListener{
@@ -86,7 +86,6 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
             }
         })
         create_shop_btn.setOnClickListener{
-            getLastLocation()
             if(validateInput()){
                 createShopAccount()
             }
@@ -106,6 +105,7 @@ class ShopkeeperRegistrationActivity : AppCompatActivity() {
                     } else {
                         shopmodel!!.shopLocationLat = location.latitude
                         shopmodel!!.shopLocationLang = location.longitude
+//                        Toast.makeText(applicationContext,shopmodel!!.shopLocationLang.toString()+""+shopmodel!!.shopLocationLat.toString(),Toast.LENGTH_LONG).show()
                     }
                 }
             } else {

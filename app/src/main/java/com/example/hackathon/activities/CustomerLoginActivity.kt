@@ -61,7 +61,6 @@ class CustomerLoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext,"Problem Occurred",Toast.LENGTH_SHORT).show()
                 }
                 sharedPref.edit().putInt("KEY",1).apply()
-                sharedPref.edit().putInt("Registered",1).apply()
                 startActivity(Intent(this,CustomerDashboardActivity::class.java))
             }
 
@@ -79,23 +78,39 @@ class CustomerLoginActivity : AppCompatActivity() {
                 val user = auth.currentUser //get current user
                 Toast.makeText(this, "User is Logged In",Toast.LENGTH_SHORT).show()
 
-                if(sharedPref.getInt("Registered",0)==1){
-                    startActivity(Intent(this,CustomerDashboardActivity::class.java))
-                }
-                else{
-                    if(user!!.email != null){
-                        Log.d("User",""+user!!.email+" "+user!!.displayName+" "+user!!.phoneNumber)
-                        Toast.makeText(this, ""+user!!.email+"is Logged In",Toast.LENGTH_SHORT).show()
-                        cst_email_edittext.setText(user!!.email)
-                        cst_name_edittext.setText(user!!.displayName)
+                val userRef = db.collection("Users").document(user!!.uid)
+//                Log.d("User Detail", userRef.get().isComplete.toString())
+                userRef.get().addOnSuccessListener {
+                    if(it.exists()){
+                        Log.d("User Details","It's in exist()")
+                        startActivity(Intent(this,CustomerDashboardActivity::class.java))
                     }else{
-                        Log.d("User",user.phoneNumber)
-                        Toast.makeText(applicationContext,user.phoneNumber,Toast.LENGTH_LONG).show()
-                        cst_phone_edittext.setText(user.phoneNumber)
+                        if(user!!.email != null){
+                            Log.d("User",""+user!!.email+" "+user!!.displayName+" "+user!!.phoneNumber)
+                            Toast.makeText(this, ""+user!!.email+"is Logged In",Toast.LENGTH_SHORT).show()
+                            cst_email_edittext.setText(user!!.email)
+                            cst_name_edittext.setText(user!!.displayName)
+                        }else{
+                            Log.d("User",user.phoneNumber)
+                            Toast.makeText(applicationContext,user.phoneNumber,Toast.LENGTH_LONG).show()
+                            cst_phone_edittext.setText(user.phoneNumber)
+                        }
                     }
-                }
-            }
 
+                }.addOnFailureListener {
+                    Log.d("User Details","It is a failure")
+                }
+//                if(user!!.email != null){
+//                    Log.d("User",""+user!!.email+" "+user!!.displayName+" "+user!!.phoneNumber)
+//                    Toast.makeText(this, ""+user!!.email+"is Logged In",Toast.LENGTH_SHORT).show()
+//                    cst_email_edittext.setText(user!!.email)
+//                    cst_name_edittext.setText(user!!.displayName)
+//                }else{
+//                    Log.d("User",user.phoneNumber)
+//                    Toast.makeText(applicationContext,user.phoneNumber,Toast.LENGTH_LONG).show()
+//                    cst_phone_edittext.setText(user.phoneNumber)
+//                }
+            }
             else
             {
                 Toast.makeText(this, ""+response!!.error!!.message,Toast.LENGTH_SHORT).show()

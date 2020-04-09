@@ -207,40 +207,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="10dp"
-                android:padding="4dp"
-                android:src="@drawable/ic_location" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/TextBlackTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Location" />
-
-                <TextView
-                    style="@style/TextDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Click On the Icon to For Navigation" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline

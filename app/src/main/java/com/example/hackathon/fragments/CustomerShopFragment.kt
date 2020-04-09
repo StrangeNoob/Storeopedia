@@ -70,7 +70,7 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
         updateShop()
 
         shopSearch!!.setOnQueryTextListener(this)
-        shopSearch!!.setIconifiedByDefault(true)
+//        shopSearch!!.setIconifiedByDefault(false)
 
         shopRefresh.setOnRefreshListener {
 
@@ -97,7 +97,7 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
         } else {
             searchOrder.clear()
             for (wp in ShopList) {
-                if (wp.shopName.toLowerCase(Locale.getDefault()).contains(charText)) {
+                if (wp.shopName.toLowerCase(Locale.getDefault()).contains(charText) || wp.category.toLowerCase(Locale.getDefault()).contains(charText)  ) {
                     searchOrder.add(wp)
                 }
             }

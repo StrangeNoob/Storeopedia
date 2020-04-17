@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -24,222 +25,57 @@ import androidx.fragment.app.Fragment
 import com.example.hackathon.R
 import com.example.hackathon.models.ShopModel
 import com.google.android.gms.location.*
-import com.google.firebase.firestore.FirebaseFirestore
-import com.mapbox.android.core.location.*
-import com.mapbox.android.core.permissions.PermissionsListener
-import com.mapbox.android.core.permissions.PermissionsManager
-import com.mapbox.geojson.Feature
-import com.mapbox.geojson.FeatureCollection
-import com.mapbox.geojson.Point
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 
-import com.mapbox.mapboxsdk.maps.MapView
-import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.annotations.MarkerOptions
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
-import com.mapbox.mapboxsdk.location.modes.CameraMode
-import com.mapbox.mapboxsdk.location.modes.RenderMode
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.style.layers.PropertyFactory
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer
-import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
-import com.mapbox.mapboxsdk.utils.BitmapUtils
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_customer_home.*
 
-class CustomerHomeFragment : Fragment(),OnMapReadyCallback, PermissionsListener {
+class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
 
-    private lateinit var map: MapboxMap
-    private lateinit var permissionsManager: PermissionsManager
-    private lateinit var locationEngine: LocationEngine
-    private lateinit var callback: LocationChangeListeningCallback
     private lateinit var sharedPref: SharedPreferences
     private var shopList : ArrayList<ShopModel> = ArrayList()
+    private lateinit var googleMap : GoogleMap
+    private var mLocationRequest: LocationRequest? = null
+    private val UPDATE_INTERVAL = (10 * 1000).toLong()  /* 10 secs */
+    private val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
 
-
+    private var latitude = 0.0
+    private var longitude = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-            Mapbox.getInstance(context!!, getString(R.string.access_token))
             return inflater.inflate(R.layout.fragment_customer_home, container, false)
     }
 
     companion object {
         fun newInstance() = CustomerHomeFragment()
-        const val DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L
-        const val DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5
-        const val  SOURCE_ID = "SOURCE_ID"
-        const val  ICON_ID = "ICON_ID"
-        const val  LAYER_ID = "LAYER_ID"
+    }
+
+    override fun onStart() {
+        super.onStart()
+        startLocationUpdates()
     }
 
      override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-         map_view.onCreate(savedInstanceState)
-         map_view.getMapAsync(this)
+         super.onViewCreated(view, savedInstanceState)
+
+         mapView.onCreate(savedInstanceState)
+         mapView.getMapAsync(this)
          sharedPref = activity!!.getSharedPreferences("MyPref", Context.MODE_PRIVATE)
          sharedPref.edit().putInt("KEY",1).apply()
          Log.d("Shared Prefs ",sharedPref.getInt("KEY",0).toString())
      }
 
-    override fun onMapReady(mapboxMap: MapboxMap) {
-        map = mapboxMap
-        callback = LocationChangeListeningCallback()
-        mapboxMap.setStyle(Style.MAPBOX_STREETS) {
-            enableLocationComponent(it)
-        }
-    }
-    private fun enableLocationComponent(loadedMapStyle: Style) {
-        if (PermissionsManager.areLocationPermissionsGranted(context!!)) {
-            val locationComponentActivationOptions = LocationComponentActivationOptions.builder(context!!, loadedMapStyle)
-                .useDefaultLocationEngine(false)
-                .build()
-            map.locationComponent.apply {
-                activateLocationComponent(locationComponentActivationOptions)
-                isLocationComponentEnabled = true                       // Enable to make component visible
-                cameraMode = CameraMode.TRACKING                        // Set the component's camera mode
-                renderMode = RenderMode.COMPASS                         // Set the component's render mode
-            }
-            initLocationEngine()
-        } else {
-            permissionsManager = PermissionsManager(this)
-            permissionsManager.requestLocationPermissions(activity)
-        }
-    }
-
-    private fun initLocationEngine() {
-        locationEngine = LocationEngineProvider.getBestLocationEngine(context!!)
-        val request = LocationEngineRequest
-            .Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
-            .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
-            .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
-            .build()
-//        locationEngine.requestLocationUpdates(request, callback, Looper.getMainLooper())
-        locationEngine.getLastLocation(callback)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    private inner class LocationChangeListeningCallback :
-        LocationEngineCallback<LocationEngineResult> {
-
-        override fun onSuccess(result: LocationEngineResult?) {
-            result?.lastLocation ?: return //BECAREFULL HERE, IF NAME LOCATION UPDATE DONT USER -> val resLoc = result.lastLocation ?: return
-            if (result.lastLocation != null){
-                val lat = result.lastLocation?.latitude!!
-                val lng = result.lastLocation?.longitude!!
-                val latLng = LatLng(lat, lng)
-
-                if (result.lastLocation != null) {
-                    map.locationComponent.forceLocationUpdate(result.lastLocation)
-                    val position = CameraPosition.Builder()
-                        .target(latLng)
-                        .zoom(13.0) //disable this for not follow zoom
-                        .tilt(10.0)
-                        .build()
-                    map.animateCamera(CameraUpdateFactory.newCameraPosition(position))
-                    shopFromDB(latLng)
-                }
-            }
-
-        }
-
-        override fun onFailure(exception: Exception) {}
-    }
-
-    private fun initAddMarker(map: MapboxMap) {
-        val symbolLayers = ArrayList<Feature>()
-        for(d in shopList)
-            map.addMarker(MarkerOptions().position(LatLng(d.shopLocationLat,d.shopLocationLang)).title(d.shopName).snippet(d.category+"\n"))
-//            symbolLayers.add(Feature.fromGeometry(Point.fromLngLat(d.shopLocationLang, d.shopLocationLat)))
-//        map.setStyle(
-//            Style.Builder().fromUri(Style.MAPBOX_STREETS)
-//                .withImage(ICON_ID, BitmapUtils
-//                    .getBitmapFromDrawable(ContextCompat.getDrawable(context!!, R.drawable.mapbox_marker_icon_default))!!)
-//                .withSource(GeoJsonSource(SOURCE_ID, FeatureCollection.fromFeatures(symbolLayers)))
-//                .withLayer(
-//                    SymbolLayer(LAYER_ID, SOURCE_ID)
-//                        .withProperties(
-//                            PropertyFactory.iconImage(ICON_ID),
-//                            PropertyFactory.iconSize(1.0f),
-//                            PropertyFactory.iconAllowOverlap(true),
-//                            PropertyFactory.iconIgnorePlacement(true)
-//                        ))
-//        )
-//        {
-//            //Here is style loaded
-//        }
-    }
-
-    override fun onExplanationNeeded(permissionsToExplain: MutableList<String>?) {
-        Toast.makeText(context!!, "Permission not granted!!", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onPermissionResult(granted: Boolean) {
-        if (granted) {
-            map.getStyle {
-                enableLocationComponent(it)
-            }
-        } else {
-            Toast.makeText(context!!, "Permission not granted!! app will be EXIT", Toast.LENGTH_LONG).show()
-            Handler().postDelayed({
-                activity!!.finish()
-            }, 3000)
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        map_view.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        map_view.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        map_view.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        map_view.onStop()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        map_view.onLowMemory()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // Prevent leaks
-        locationEngine.removeLocationUpdates(callback)
-        map_view.onDestroy()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        if (outState !=null){
-            map_view.onSaveInstanceState(outState)
-        }
-    }
-
     private fun shopFromDB(userLatLng: LatLng) {
 
         val db = FirebaseFirestore.getInstance()
-
         var userLat = userLatLng.latitude
         var userLang = userLatLng.longitude
         db.collection("Shops").get().addOnSuccessListener {
@@ -254,20 +90,96 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback, PermissionsListener 
                             && shop.shopLocationLat <= userLat+0.2
                             && userLang-0.2 <= shop.shopLocationLang
                             && shop.shopLocationLang <= userLang+0.2){
-
                             shopList.add(shop)
                         }
                     }
                 }
                 Log.d("User Details","Shop List has "+shopList.size.toString()+" Elements")
                 Toast.makeText(context!!,"Your Neighbourhood has "+shopList.size.toString()+" Shops ",Toast.LENGTH_LONG).show()
-                if(shopList.size !=0) initAddMarker(map)
+
             }
         }.addOnFailureListener {
             Toast.makeText(context!!,"Check your Internet",Toast.LENGTH_SHORT).show()
         }
     }
 
+    override fun onMapReady(map: GoogleMap?) {
 
+        map?.let {
+            googleMap = it
+        }
+        if (googleMap != null) {
+            googleMap!!.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).title("Current Location"))
+        }
 
+    }
+    protected fun startLocationUpdates() {
+        // initialize location request object
+        mLocationRequest = LocationRequest.create()
+        mLocationRequest!!.run {
+            setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+            setInterval(UPDATE_INTERVAL)
+            setFastestInterval(FASTEST_INTERVAL)
+        }
+
+        // initialize location setting request builder object
+        val builder = LocationSettingsRequest.Builder()
+        builder.addLocationRequest(mLocationRequest!!)
+        val locationSettingsRequest = builder.build()
+
+        // initialize location service object
+        val settingsClient = LocationServices.getSettingsClient(activity!!)
+        settingsClient!!.checkLocationSettings(locationSettingsRequest)
+
+        // call register location listener
+        registerLocationListner()
+    }
+
+    private fun registerLocationListner() {
+        // initialize location callback object
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                onLocationChanged(locationResult!!.getLastLocation())
+            }
+        }
+        // 4. add permission if android version is greater then 23
+        if(Build.VERSION.SDK_INT >= 23 && checkPermission()) {
+            LocationServices.getFusedLocationProviderClient(activity!!).requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper())
+        }
+    }
+
+    //
+    private fun onLocationChanged(location: Location) {
+        // create message for toast with updated latitude and longitudefa
+        var msg = "Updated Location: " + location.latitude  + " , " +location.longitude
+
+        // show toast message with updated location
+        //Toast.makeText(this,msg, Toast.LENGTH_LONG).show()
+        val location = LatLng(location.latitude, location.longitude)
+        googleMap!!.clear()
+        googleMap!!.addMarker(MarkerOptions().position(location).title("Current Location"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
+    }
+
+    private fun checkPermission() : Boolean {
+        if (ContextCompat.checkSelfPermission(context!! , android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            requestPermissions()
+            return false
+        }
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(activity!!, arrayOf("Manifest.permission.ACCESS_FINE_LOCATION"),1)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (permissions[0] == android.Manifest.permission.ACCESS_FINE_LOCATION) {
+                registerLocationListner()
+            }
+        }
+    }
 }

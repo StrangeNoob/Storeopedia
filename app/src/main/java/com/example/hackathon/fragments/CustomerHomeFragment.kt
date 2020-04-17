@@ -35,15 +35,15 @@ import kotlinx.android.synthetic.main.fragment_customer_home.*
 class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
 
     private lateinit var sharedPref: SharedPreferences
-    private var shopList : ArrayList<ShopModel> = ArrayList()
-    private lateinit var googleMap : GoogleMap
+    private var shopList: ArrayList<ShopModel> = ArrayList()
+    private lateinit var googleMap: GoogleMap
     private var mLocationRequest: LocationRequest? = null
     private val UPDATE_INTERVAL = (10 * 1000).toLong()  /* 10 secs */
     private val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
 
     private var latitude = 0.0
     private var longitude = 0.0
-    private var mapSuported : Boolean = true
+    private var mapSuported: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,13 +58,14 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
         super.onActivityCreated(savedInstanceState)
         try {
             MapsInitializer.initialize(activity!!)
-        }catch (e: GooglePlayServicesNotAvailableException){
+        } catch (e: GooglePlayServicesNotAvailableException) {
             mapSuported = false
         }
-        if(mapView != null){
+        if (mapView != null) {
             mapView.onCreate(savedInstanceState)
         }
     }
+
     companion object {
         fun newInstance() = CustomerHomeFragment()
     }
@@ -73,6 +74,7 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
         super.onStart()
         startLocationUpdates()
     }
+
     override fun onResume() {
         super.onResume()
         mapView.onResume()
@@ -100,15 +102,13 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
     }
 
 
-
-
-     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-         super.onViewCreated(view, savedInstanceState)
-         mapView.getMapAsync(this)
-         sharedPref = activity!!.getSharedPreferences("MyPref", Context.MODE_PRIVATE)
-         sharedPref.edit().putInt("KEY",1).apply()
-         Log.d("Shared Prefs ",sharedPref.getInt("KEY",0).toString())
-     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mapView.getMapAsync(this)
+        sharedPref = activity!!.getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+        sharedPref.edit().putInt("KEY", 1).apply()
+        Log.d("Shared Prefs ", sharedPref.getInt("KEY", 0).toString())
+    }
 
     private fun shopFromDB(userLatLng: LatLng) {
 
@@ -123,20 +123,25 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
 
                     var shop = d.toObject(ShopModel::class.java)
                     if (shop != null) {
-                        if(     userLat-0.2 <= shop.shopLocationLat
-                            && shop.shopLocationLat <= userLat+0.2
-                            && userLang-0.2 <= shop.shopLocationLang
-                            && shop.shopLocationLang <= userLang+0.2){
+                        if (userLat - 0.2 <= shop.shopLocationLat
+                            && shop.shopLocationLat <= userLat + 0.2
+                            && userLang - 0.2 <= shop.shopLocationLang
+                            && shop.shopLocationLang <= userLang + 0.2
+                        ) {
                             shopList.add(shop)
                         }
                     }
                 }
-                Log.d("User Details","Shop List has "+shopList.size.toString()+" Elements")
-                Toast.makeText(context!!,"Your Neighbourhood has "+shopList.size.toString()+" Shops ",Toast.LENGTH_LONG).show()
-
+                Log.d("User Details", "Shop List has " + shopList.size.toString() + " Elements")
+                Toast.makeText(
+                    context!!,
+                    "Your Neighbourhood has " + shopList.size.toString() + " Shops ",
+                    Toast.LENGTH_LONG
+                ).show()
+                if(shopList.size !=0) initAddMarker()
             }
         }.addOnFailureListener {
-            Toast.makeText(context!!,"Check your Internet",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context!!, "Check your Internet", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -148,11 +153,15 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
         }
         if (googleMap != null) {
 
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(
-                CameraPosition
-                    .builder()
-                    .target(LatLng(latitude, longitude)).zoom(15F).build()))
+            googleMap.animateCamera(
+                CameraUpdateFactory.newCameraPosition(
+                    CameraPosition
+                        .builder()
+                        .target(LatLng(latitude, longitude)).zoom(15F).build()
+                )
+            )
             googleMap.isMyLocationEnabled = true
+            shopFromDB(LatLng(latitude,longitude))
         }
     }
 
@@ -186,15 +195,16 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
             }
         }
         // 4. add permission if android version is greater then 23
-        if(Build.VERSION.SDK_INT >= 23 && checkPermission()) {
-            LocationServices.getFusedLocationProviderClient(activity!!).requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper())
+        if (Build.VERSION.SDK_INT >= 23 && checkPermission()) {
+            LocationServices.getFusedLocationProviderClient(activity!!)
+                .requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper())
         }
     }
 
     //
     private fun onLocationChanged(location: Location) {
         // create message for toast with updated latitude and longitudefa
-        var msg = "Updated Location: " + location.latitude  + " , " +location.longitude
+        var msg = "Updated Location: " + location.latitude + " , " + location.longitude
 
         // show toast message with updated location
         //Toast.makeText(this,msg, Toast.LENGTH_LONG).show()
@@ -203,8 +213,12 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
     }
 
-    private fun checkPermission() : Boolean {
-        if (ContextCompat.checkSelfPermission(context!! , android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+    private fun checkPermission(): Boolean {
+        if (ContextCompat.checkSelfPermission(
+                context!!,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             return true;
         } else {
             requestPermissions()
@@ -213,10 +227,18 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
     }
 
     private fun requestPermissions() {
-        ActivityCompat.requestPermissions(activity!!, arrayOf("Manifest.permission.ACCESS_FINE_LOCATION"),1)
+        ActivityCompat.requestPermissions(
+            activity!!,
+            arrayOf("Manifest.permission.ACCESS_FINE_LOCATION"),
+            1
+        )
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
             if (permissions[0] == android.Manifest.permission.ACCESS_FINE_LOCATION) {
@@ -224,4 +246,10 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
             }
         }
     }
+
+    private fun initAddMarker() {
+        for (d in shopList)
+            googleMap.addMarker(MarkerOptions().position(LatLng(d.shopLocationLat, d.shopLocationLang)).title(d.shopName).snippet(d.category + "\n"))
+    }
 }
+

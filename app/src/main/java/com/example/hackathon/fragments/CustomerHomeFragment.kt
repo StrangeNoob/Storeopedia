@@ -24,13 +24,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.hackathon.R
 import com.example.hackathon.models.ShopModel
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.*
 
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_customer_home.*
 
@@ -45,15 +43,28 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
 
     private var latitude = 0.0
     private var longitude = 0.0
+    private var mapSuported : Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_customer_home, container, false)
+
+        return inflater.inflate(R.layout.fragment_customer_home, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        try {
+            MapsInitializer.initialize(activity!!)
+        }catch (e: GooglePlayServicesNotAvailableException){
+            mapSuported = false
+        }
+        if(mapView != null){
+            mapView.onCreate(savedInstanceState)
+        }
+    }
     companion object {
         fun newInstance() = CustomerHomeFragment()
     }
@@ -62,11 +73,37 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
         super.onStart()
         startLocationUpdates()
     }
+    override fun onResume() {
+        super.onResume()
+        mapView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mapView.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mapView.onStop()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView.onLowMemory()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Prevent leaks
+        mapView.onDestroy()
+    }
+
+
+
 
      override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
          super.onViewCreated(view, savedInstanceState)
-
-         mapView.onCreate(savedInstanceState)
          mapView.getMapAsync(this)
          sharedPref = activity!!.getSharedPreferences("MyPref", Context.MODE_PRIVATE)
          sharedPref.edit().putInt("KEY",1).apply()
@@ -107,12 +144,18 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
 
         map?.let {
             googleMap = it
+            it.setMinZoomPreference(15.0F)
         }
         if (googleMap != null) {
-            googleMap!!.addMarker(MarkerOptions().position(LatLng(latitude, longitude)).title("Current Location"))
-        }
 
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(
+                CameraPosition
+                    .builder()
+                    .target(LatLng(latitude, longitude)).zoom(15F).build()))
+            googleMap.isMyLocationEnabled = true
+        }
     }
+
     protected fun startLocationUpdates() {
         // initialize location request object
         mLocationRequest = LocationRequest.create()
@@ -157,7 +200,6 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
         //Toast.makeText(this,msg, Toast.LENGTH_LONG).show()
         val location = LatLng(location.latitude, location.longitude)
         googleMap!!.clear()
-        googleMap!!.addMarker(MarkerOptions().position(location).title("Current Location"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
     }
 

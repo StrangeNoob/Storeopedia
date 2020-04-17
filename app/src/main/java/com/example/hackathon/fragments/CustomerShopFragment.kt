@@ -56,12 +56,6 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        var order1 : ShopModel = ShopModel("aaaa","jadsbf","Groceries","ss@gmail.com","1234567890","10:00AM-10:00PM",false,"https://i.imgur.com/SPVVTyd.png")
-//        var order2 : ShopModel = ShopModel("aaa1","Owner","Medical","halhsdfl@gmail.com","1234567890","11AM-12PM",true,"https://i.imgur.com/SPVVTyd.png")
-//        if(ShopList.isEmpty())
-//        {   ShopList.add(order1)
-//            ShopList.add(order2)
-//        }
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
         adapter = ShopAdapter(ShopList,context!!)
         shopRecyclerView.adapter = adapter
@@ -70,7 +64,6 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
         updateShop()
 
         shopSearch!!.setOnQueryTextListener(this)
-//        shopSearch!!.setIconifiedByDefault(false)
 
         shopRefresh.setOnRefreshListener {
 
@@ -207,9 +200,7 @@ class CustomerShopFragment : Fragment(), SearchView.OnQueryTextListener, SwipeRe
 
     private fun isLocationEnabled(): Boolean {
         var locationManager: LocationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
 
     private fun checkPermissions(): Boolean {

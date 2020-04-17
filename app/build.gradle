@@ -62,9 +62,9 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
-//   MapBox Dependencies
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.2'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v8:0.7.0'
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+
 //  Spinner Dependencies
     implementation "com.github.skydoves:powerspinner:1.0.5"
 //  Time Picker Dependencies

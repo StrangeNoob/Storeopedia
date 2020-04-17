@@ -21,8 +21,8 @@
             app:title="@string/app_name"
             app:titleTextColor="@color/colorWhite" />
 
-        <com.mapbox.mapboxsdk.maps.MapView
-            android:id="@+id/map_view"
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -7,7 +7,6 @@
 
     <!--    MapBox Api Key-->
     <string name="access_token">pk.eyJ1Ijoic3RyYW5nZW5vb2IiLCJhIjoiY2s4ajdnOG1sMDYxYTNmcXE3bmo2dnpidCJ9.86nAsfS__Mzf6Rs91Q3RMg</string>
-
     <string name="loading">Loading...</string>
     <!--    Choices in Shop Categories-->
     <string-array name="Categories">

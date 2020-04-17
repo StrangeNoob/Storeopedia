@@ -227,6 +227,7 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
         var msg = "Updated Location: " + location.latitude + " , " + location.longitude
         Log.d("User Detail",msg)
         val location = LatLng(location.latitude, location.longitude)
+        shopFromDB(location)
         googleMap!!.clear()
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
 

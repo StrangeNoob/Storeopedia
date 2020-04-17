@@ -40,6 +40,7 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
     private var mLocationRequest: LocationRequest? = null
     private val UPDATE_INTERVAL = (10 * 1000).toLong()  /* 10 secs */
     private val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
+    val PERMISSION_ID = 42
 
     private var latitude = 0.0
     private var longitude = 0.0
@@ -112,6 +113,7 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
 
     private fun shopFromDB(userLatLng: LatLng) {
 
+        Log.d("User Details", userLatLng.toString())
         val db = FirebaseFirestore.getInstance()
         var userLat = userLatLng.latitude
         var userLang = userLatLng.longitude
@@ -128,6 +130,7 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
                             && userLang - 0.2 <= shop.shopLocationLang
                             && shop.shopLocationLang <= userLang + 0.2
                         ) {
+                            Log.d("User Detail",shop.toString())
                             shopList.add(shop)
                         }
                     }
@@ -164,13 +167,18 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
             shopFromDB(LatLng(latitude,longitude))
         }
     }
-
+    private fun initAddMarker() {
+        for (d in shopList){
+            googleMap.addMarker(MarkerOptions().position(LatLng(d.shopLocationLat, d.shopLocationLang)).title(d.shopName).snippet(d.category + "\n"))
+        }
+    }
     protected fun startLocationUpdates() {
         // initialize location request object
         mLocationRequest = LocationRequest.create()
         mLocationRequest!!.run {
             setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
             setInterval(UPDATE_INTERVAL)
+            setNumUpdates(1)
             setFastestInterval(FASTEST_INTERVAL)
         }
 
@@ -191,65 +199,76 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
         // initialize location callback object
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
-                onLocationChanged(locationResult!!.getLastLocation())
+                    onLocationChanged(locationResult!!.getLastLocation())
             }
         }
         // 4. add permission if android version is greater then 23
-        if (Build.VERSION.SDK_INT >= 23 && checkPermission()) {
-            LocationServices.getFusedLocationProviderClient(activity!!)
-                .requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper())
+        if (Build.VERSION.SDK_INT >= 23 ) {
+            if(checkPermissions()){
+                Log.d("User Details",checkPermissions().toString())
+                if(isLocationEnabled()){
+                    Log.d("User Details",isLocationEnabled().toString())
+                    LocationServices.getFusedLocationProviderClient(activity!!)
+                        .requestLocationUpdates(mLocationRequest, locationCallback, Looper.myLooper())
+                }else {
+                    Toast.makeText(context!!, "Turn on location", Toast.LENGTH_LONG).show()
+                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(intent)
+                }
+            } else {
+                requestPermissions()
+            }
         }
     }
 
     //
     private fun onLocationChanged(location: Location) {
-        // create message for toast with updated latitude and longitudefa
+        // create message for toast with updated latitude and longitude
         var msg = "Updated Location: " + location.latitude + " , " + location.longitude
-
-        // show toast message with updated location
-        //Toast.makeText(this,msg, Toast.LENGTH_LONG).show()
+        Log.d("User Detail",msg)
         val location = LatLng(location.latitude, location.longitude)
         googleMap!!.clear()
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
+
     }
 
-    private fun checkPermission(): Boolean {
-        if (ContextCompat.checkSelfPermission(
+    private fun isLocationEnabled(): Boolean {
+        var locationManager: LocationManager = activity!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
+
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
                 context!!,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                context!!,
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            return true;
-        } else {
-            requestPermissions()
-            return false
+            return true
         }
+        return false
     }
 
     private fun requestPermissions() {
         ActivityCompat.requestPermissions(
             activity!!,
-            arrayOf("Manifest.permission.ACCESS_FINE_LOCATION"),
-            1
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+            PERMISSION_ID
         )
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1) {
-            if (permissions[0] == android.Manifest.permission.ACCESS_FINE_LOCATION) {
-                registerLocationListner()
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == PERMISSION_ID) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+               registerLocationListner()
             }
         }
     }
 
-    private fun initAddMarker() {
-        for (d in shopList)
-            googleMap.addMarker(MarkerOptions().position(LatLng(d.shopLocationLat, d.shopLocationLang)).title(d.shopName).snippet(d.category + "\n"))
-    }
+
 }
 

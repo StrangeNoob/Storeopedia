@@ -51,6 +51,12 @@ class ViewShopProfile : AppCompatActivity() {
             intent.setData(u)
             startActivity(intent)
         }
+        viewDirection.setOnClickListener {
+            val gmmIntentUri = Uri.parse("google.navigation:q=$ShopLocationLat,$ShopLocationLang")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
     }
     private fun requestPermissions() {
         ActivityCompat.requestPermissions(

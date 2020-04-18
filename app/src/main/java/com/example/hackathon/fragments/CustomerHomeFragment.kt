@@ -164,7 +164,7 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
                 )
             )
             googleMap.isMyLocationEnabled = true
-            shopFromDB(LatLng(latitude,longitude))
+
         }
     }
     private fun initAddMarker() {
@@ -178,7 +178,7 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
         mLocationRequest!!.run {
             setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
             setInterval(UPDATE_INTERVAL)
-            setNumUpdates(1)
+            setNumUpdates(3)
             setFastestInterval(FASTEST_INTERVAL)
         }
 

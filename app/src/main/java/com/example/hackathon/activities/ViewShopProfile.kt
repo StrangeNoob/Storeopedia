@@ -57,6 +57,9 @@ class ViewShopProfile : AppCompatActivity() {
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
         }
+        viewChat.setOnClickListener {
+
+        }
     }
     private fun requestPermissions() {
         ActivityCompat.requestPermissions(
@@ -69,20 +72,14 @@ class ViewShopProfile : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             1 -> {
-
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.i("User Details", "Permission has been denied by user")
-
                 } else {
                     Log.i("User Details", "Permission has been granted by user")
                     val u: Uri = Uri.parse("tel:$ShopPhoneNo")
-                    val intent : Intent = Intent(Intent.ACTION_CALL)
+                    val intent = Intent(Intent.ACTION_CALL)
                     intent.setData(u)
-                    if (ActivityCompat.checkSelfPermission(
-                            this@ViewShopProfile,
-                            Manifest.permission.CALL_PHONE
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
+                    if (ActivityCompat.checkSelfPermission(this@ViewShopProfile,Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
                         return
                     }
                     startActivity(intent)

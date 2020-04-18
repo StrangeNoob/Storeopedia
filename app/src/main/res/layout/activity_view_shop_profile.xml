@@ -213,6 +213,7 @@
                     android:background="@drawable/rounded_corner_white"
                     android:padding="10dp"
                     android:src="@drawable/ic_chat"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/viewDirection"
                     app:layout_constraintStart_toEndOf="@+id/viewPhone"

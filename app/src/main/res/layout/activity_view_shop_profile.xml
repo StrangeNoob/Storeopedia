@@ -103,40 +103,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="10dp"
-                android:padding="4dp"
-                android:src="@drawable/ic_phone" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/TextBlackTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Phone" />
-
-                <TextView
-                    android:id="@+id/viewShopPhone"
-                    style="@style/TextDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/loading" />
-
-            </LinearLayout>
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -206,7 +173,52 @@
             </LinearLayout>
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+                <ImageView
+                    android:id="@+id/viewPhone"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/rounded_corner_white"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_phone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/viewChat"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/viewDirection"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/rounded_corner_white"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_directions"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/viewChat"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/viewChat"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/rounded_corner_white"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_chat"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/viewDirection"
+                    app:layout_constraintStart_toEndOf="@+id/viewPhone"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline

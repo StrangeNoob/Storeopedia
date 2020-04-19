@@ -6,6 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
@@ -13,6 +17,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.service.dreams.DreamService
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -169,9 +174,49 @@ class CustomerHomeFragment : Fragment(),OnMapReadyCallback {
     }
     private fun initAddMarker() {
         for (d in shopList){
-            googleMap.addMarker(MarkerOptions().position(LatLng(d.shopLocationLat, d.shopLocationLang)).title(d.shopName).snippet(d.category + "\n"))
+            if(d.category.equals("Groceries")){
+
+                googleMap.addMarker(MarkerOptions()
+                    .position(LatLng(d.shopLocationLat, d.shopLocationLang))
+                    .title(d.shopName).snippet(d.category + "\n")
+                    .icon(generateBitmapDescriptorFromRes(context!!,R.drawable.ic_homemarker)))
+            }else if(d.category.equals("Medical Shop")){
+
+                googleMap.addMarker(MarkerOptions()
+                    .position(LatLng(d.shopLocationLat, d.shopLocationLang))
+                    .title(d.shopName).snippet(d.category + "\n")
+                    .icon(generateBitmapDescriptorFromRes(context!!,R.drawable.ic_homemarker)))
+            }else if(d.category.equals("Dairy Product")){
+
+                googleMap.addMarker(MarkerOptions()
+                    .position(LatLng(d.shopLocationLat, d.shopLocationLang))
+                    .title(d.shopName).snippet(d.category + "\n")
+                    .icon(generateBitmapDescriptorFromRes(context!!,R.drawable.ic_homemarker)))
+            }else{
+
+                googleMap.addMarker(MarkerOptions()
+                    .position(LatLng(d.shopLocationLat, d.shopLocationLang))
+                    .title(d.shopName).snippet(d.category + "\n")
+                    .icon(generateBitmapDescriptorFromRes(context!!,R.drawable.ic_homemarker)))
+            }
         }
     }
+        fun  generateBitmapDescriptorFromRes(context:Context,resId: Int) : BitmapDescriptor {
+                var drawable : Drawable? = context.getDrawable(resId);
+                drawable!!.setBounds(
+                      0,
+                      0,
+                      drawable.getIntrinsicWidth(),
+                      drawable.getIntrinsicHeight())
+                var bitmap = Bitmap.createBitmap(
+                        drawable.getIntrinsicWidth(),
+                        drawable.getIntrinsicHeight(),
+                        Bitmap.Config.ARGB_8888);
+                var canvas = Canvas(bitmap);
+                drawable.draw(canvas);
+                return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
     protected fun startLocationUpdates() {
         // initialize location request object
         mLocationRequest = LocationRequest.create()
